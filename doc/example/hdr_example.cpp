@@ -235,6 +235,7 @@ void execute(const Arguments &args)
 	// If allow_approximate_gamma is set, out-of-range pixels may be clipped,
 	// which could interfere with further processing of image highlights.
 	zimgxx::zfilter_graph_builder_params params;
+	params.nominal_min_luminance = NAN;
 	params.nominal_peak_luminance = args.luminance;
 	params.allow_approximate_gamma = !!args.fast;
 

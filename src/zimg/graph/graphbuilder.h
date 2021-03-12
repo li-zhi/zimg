@@ -126,7 +126,8 @@ public:
 		const resize::Filter *filter_uv;
 		bool unresize;
 		depth::DitherType dither_type;
-		double peak_luminance;
+        double min_luminance;
+        double peak_luminance;
 		bool approximate_gamma;
 		bool scene_referred;
 		CPUClass cpu;

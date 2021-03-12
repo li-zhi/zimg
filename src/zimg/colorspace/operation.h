@@ -23,6 +23,7 @@ enum class ColorPrimaries;
  */
 struct OperationParams {
 #include "common/builder.h"
+    BUILDER_MEMBER(double, min_luminance)
 	BUILDER_MEMBER(double, peak_luminance)
 	BUILDER_MEMBER(bool, approximate_gamma)
 	BUILDER_MEMBER(bool, scene_referred)
@@ -32,6 +33,7 @@ struct OperationParams {
 	 * Default construct OperationParams, initializing it with invalid values.
 	 */
 	OperationParams() :
+	    min_luminance{ NAN },
 		peak_luminance{ NAN },
 		approximate_gamma{},
 		scene_referred{}

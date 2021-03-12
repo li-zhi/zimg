@@ -95,6 +95,7 @@ ColorspaceConversion::ColorspaceConversion(unsigned width, unsigned height) :
 	height{ height },
 	csp_in{},
 	csp_out{},
+	min_luminance{ 0.0 },
 	peak_luminance{ 100.0 },
 	approximate_gamma{},
 	scene_referred{},
@@ -104,7 +105,8 @@ ColorspaceConversion::ColorspaceConversion(unsigned width, unsigned height) :
 std::unique_ptr<graph::ImageFilter> ColorspaceConversion::create() const try
 {
 	OperationParams params;
-	params.set_peak_luminance(peak_luminance)
+	params.set_min_luminance(min_luminance)
+	      .set_peak_luminance(peak_luminance)
 	      .set_approximate_gamma(approximate_gamma)
 	      .set_scene_referred(scene_referred);
 

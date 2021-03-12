@@ -609,11 +609,18 @@ typedef struct zimg_graph_builder_params {
 	zimg_cpu_type_e cpu_type;                  /**< Target CPU architecture (default ZIMG_CPU_AUTO). */
 
 	/**
+	 * Nominal min luminance (cd/m^2) for standard-dynamic range (SDR) systems.
+	 *
+	 * The default value is NAN, which is interpreted as 0 cd/m^2.
+	 */
+	double nominal_min_luminance;
+
+	/**
 	 * Nominal peak luminance (cd/m^2) for standard-dynamic range (SDR) systems.
 	 *
 	 * When a high dynamic range (HDR) transfer function is converted to linear
 	 * light, the linear values are scaled such that nominal white (L = 1.0)
-	 * matches the nominal SDR luminance. The HDR component of the signal is
+	 * matches the nominal maximum SDR luminance. The HDR component of the signal is
 	 * represented as multiples of the SDR luminance (L > 1.0).
 	 *
 	 * Certain HDR transfer functions (e.g. ST.2084) have a defined mapping

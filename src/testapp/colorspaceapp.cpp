@@ -68,6 +68,7 @@ struct Arguments {
 	zimg::colorspace::ColorspaceDefinition csp_out;
 	char fullrange_in;
 	char fullrange_out;
+	double min_luminance;
 	double peak_luminance;
 	char approximate_gamma;
 	char scene_referred;
@@ -81,7 +82,8 @@ const ArgparseOption program_switches[] = {
 	{ OPTION_UINT,   "h",     "height",         offsetof(Arguments, height),            nullptr, "image height" },
 	{ OPTION_FLAG,   nullptr, "fullrange-in",   offsetof(Arguments, fullrange_in),      nullptr, "input is PC range" },
 	{ OPTION_FLAG,   nullptr, "fullrange-out",  offsetof(Arguments, fullrange_out),     nullptr, "output is PC range" },
-	{ OPTION_FLOAT,  nullptr, "peak-luminance", offsetof(Arguments, peak_luminance),    nullptr, "nominal peak luminance for SDR (cd/m^2)" },
+    { OPTION_FLOAT,  nullptr, "min-luminance",  offsetof(Arguments, min_luminance),     nullptr, "nominal minimum luminance for SDR (cd/m^2)" },
+    { OPTION_FLOAT,  nullptr, "peak-luminance", offsetof(Arguments, peak_luminance),    nullptr, "nominal peak luminance for SDR (cd/m^2)" },
 	{ OPTION_FLAG,   nullptr, "lut",            offsetof(Arguments, approximate_gamma), nullptr, "use LUT to evaluate transfer functions" },
 	{ OPTION_FLAG,   "s",     "scene-referred", offsetof(Arguments, scene_referred),    nullptr, "use scene-referred transfer functions" },
 	{ OPTION_STRING, nullptr, "visualise",      offsetof(Arguments, visualise_path),    nullptr, "path to BMP file for visualisation" },
@@ -116,6 +118,7 @@ int colorspace_main(int argc, char **argv)
 	Arguments args{};
 	int ret;
 
+	args.min_luminance = NAN;
 	args.peak_luminance = NAN;
 	args.times = 1;
 
@@ -138,6 +141,8 @@ int colorspace_main(int argc, char **argv)
 		    .set_approximate_gamma(!!args.approximate_gamma)
 		    .set_scene_referred(!!args.scene_referred)
 		    .set_cpu(args.cpu);
+        if (!std::isnan(args.min_luminance))
+            conv.set_min_luminance(args.min_luminance);
 		if (!std::isnan(args.peak_luminance))
 			conv.set_peak_luminance(args.peak_luminance);
 

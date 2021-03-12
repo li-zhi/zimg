@@ -40,13 +40,14 @@ public:
 
 	void colorspace(const zimg::colorspace::ColorspaceConversion &conv) override
 	{
-		printf("colorspace: [%d, %d, %d] => [%d, %d, %d] (%f)\n",
+		printf("colorspace: [%d, %d, %d] => [%d, %d, %d] (%f) (%f)\n",
 			static_cast<int>(conv.csp_in.matrix),
 			static_cast<int>(conv.csp_in.transfer),
 			static_cast<int>(conv.csp_in.primaries),
 			static_cast<int>(conv.csp_out.matrix),
 			static_cast<int>(conv.csp_out.transfer),
 			static_cast<int>(conv.csp_out.primaries),
+			conv.min_luminance,
 			conv.peak_luminance);
 	}
 
@@ -207,8 +208,10 @@ void read_graph_params(zimg::graph::GraphBuilder::params *params, const json::Ob
 
 	if (const auto &val = obj["dither_type"])
 		params->dither_type = g_dither_table[val.string().c_str()];
-	if (const auto &val = obj["peak_luminance"])
-		params->peak_luminance = val.number();
+    if (const auto &val = obj["min_luminance"])
+        params->min_luminance = val.number();
+    if (const auto &val = obj["min_luminance"])
+        params->peak_luminance = val.number();
 	if (const auto &val = obj["approximate_gamma"])
 		params->approximate_gamma = val.boolean();
 	if (const auto &val = obj["scene_referred"])
